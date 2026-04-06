@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>赛博朋克节拍器</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/theme.css">
+</head>
+<body>
+
+<div id="app" class="metronome-app">
+
+  <!-- ════ 顶部视觉区域 ════ -->
+  <div class="bunny-wrap" id="bunny-wrap" title="点击播放或暂停">
+
+    <svg id="bunny-svg" viewBox="0 0 200 220" xmlns="http://www.w3.org/2000/svg">
+
+      <defs>
+        <!-- Pink neon glow for ears/head -->
+        <filter id="neonPinkGlow" x="-60%" y="-60%" width="220%" height="220%">
+          <feGaussianBlur in="SourceGraphic" stdDeviation="5" result="b"/>
+          <feMerge><feMergeNode in="b"/><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+        <!-- Cyan eye glow -->
+        <filter id="cyanGlow" x="-80%" y="-80%" width="260%" height="260%">
+          <feGaussianBlur in="SourceGraphic" stdDeviation="4" result="b"/>
+          <feMerge><feMergeNode in="b"/><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+        <!-- Hot white flash for accent -->
+        <filter id="hotFlash" x="-100%" y="-100%" width="300%" height="300%">
+          <feGaussianBlur in="SourceGraphic" stdDeviation="10" result="b"/>
+          <feMerge><feMergeNode in="b"/><feMergeNode in="b"/><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+        <!-- Background radial -->
+        <radialGradient id="bgGrad" cx="50%" cy="45%" r="55%">
+          <stop offset="0%"   stop-color="#1a0530"/>
+          <stop offset="100%" stop-color="#08010f"/>
+        </radialGradient>
+        <!-- Pink body gradient -->
+        <radialGradient id="pinkBody" cx="40%" cy="35%" r="65%">
+          <stop offset="0%"   stop-color="#ff66cc"/>
+          <stop offset="100%" stop-color="#cc2288"/>
+        </radialGradient>
+      </defs>
+
+      <!-- Background -->
+      <rect width="200" height="220" fill="url(#bgGrad)"/>
+
+      <!-- ════ LEFT EAR ════ -->
+      <ellipse id="bunny-ear-l" cx="68" cy="75" rx="22" ry="58"
+        fill="url(#pinkBody)"
+        stroke="#ff44bb" stroke-width="2"
+        filter="url(#neonPinkGlow)"/>
+      <!-- Left ear inner -->
+      <ellipse cx="68" cy="80" rx="12" ry="38"
+        fill="#ffaadd" opacity="0.55"/>
+
+      <!-- ════ RIGHT EAR ════ -->
+      <ellipse id="bunny-ear-r" cx="132" cy="75" rx="22" ry="58"
+        fill="url(#pinkBody)"
+        stroke="#ff44bb" stroke-width="2"
+        filter="url(#neonPinkGlow)"/>
+      <!-- Right ear inner -->
+      <ellipse cx="132" cy="80" rx="12" ry="38"
+        fill="#ffaadd" opacity="0.55"/>
+
+      <!-- ════ HEAD ════ -->
+      <circle id="bunny-head"
+        cx="100" cy="135" r="58"
+        fill="url(#pinkBody)"
+        stroke="#ff44bb" stroke-width="2.5"
+        filter="url(#neonPinkGlow)"/>
+
+      <!-- Cheek blush left -->
+      <ellipse cx="62" cy="150" rx="14" ry="9"
+        fill="#ff88cc" opacity="0.45"/>
+      <!-- Cheek blush right -->
+      <ellipse cx="138" cy="150" rx="14" ry="9"
+        fill="#ff88cc" opacity="0.45"/>
+
+      <!-- ════ LEFT EYE ════ -->
+      <g id="eye-l">
+        <ellipse cx="80" cy="132" rx="15" ry="17"
+          fill="#000008"/>
+        <ellipse id="eye-l-iris" cx="80" cy="132" rx="11" ry="13"
+          fill="#00ffcc" filter="url(#cyanGlow)"/>
+        <ellipse id="eye-l-pupil" cx="80" cy="132" rx="6" ry="8"
+          fill="#000"/>
+        <ellipse cx="76" cy="127" rx="4" ry="3.5"
+          fill="rgba(255,255,255,0.8)"/>
+        <ellipse cx="84" cy="136" rx="2" ry="1.5"
+          fill="rgba(255,255,255,0.35)"/>
+      </g>
+
+      <!-- ════ RIGHT EYE ════ -->
+      <g id="eye-r">
+        <ellipse cx="120" cy="132" rx="15" ry="17"
+          fill="#000008"/>
+        <ellipse id="eye-r-iris" cx="120" cy="132" rx="11" ry="13"
+          fill="#00ffcc" filter="url(#cyanGlow)"/>
+        <ellipse id="eye-r-pupil" cx="120" cy="132" rx="6" ry="8"
+          fill="#000"/>
+        <ellipse cx="116" cy="127" rx="4" ry="3.5"
+          fill="rgba(255,255,255,0.8)"/>
+        <ellipse cx="124" cy="136" rx="2" ry="1.5"
+          fill="rgba(255,255,255,0.35)"/>
+      </g>
+
+      <!-- ════ NOSE ════ -->
+      <ellipse cx="100" cy="153" rx="5" ry="4"
+        fill="#ff88aa"/>
+
+      <!-- ════ MOUTH ════ -->
+      <path d="M 91 158 Q 100 165 109 158"
+        fill="none" stroke="#cc3377" stroke-width="2"
+        stroke-linecap="round"/>
+
+      <!-- Whiskers left -->
+      <g stroke="#ffaacc" stroke-width="1" opacity="0.6">
+        <line x1="48" y1="148" x2="68" y2="150"/>
+        <line x1="45" y1="155" x2="66" y2="154"/>
+        <line x1="48" y1="162" x2="68" y2="158"/>
+      </g>
+      <!-- Whiskers right -->
+      <g stroke="#ffaacc" stroke-width="1" opacity="0.6">
+        <line x1="152" y1="148" x2="132" y2="150"/>
+        <line x1="155" y1="155" x2="134" y2="154"/>
+        <line x1="152" y1="162" x2="132" y2="158"/>
+      </g>
+
+    </svg>
+  </div>
+
+
+
+
+
+
+
+  <!-- ════ BPM 显示 ════ -->
+  <div class="bpm-display">
+    <div class="bpm-value" id="bpm-value">72</div>
+    <div class="bpm-label">BPM</div>
+  </div>
+
+  <!-- ════ BPM 控制 ════ -->
+  <div class="bpm-controls">
+    <button class="btn-neon" id="btn-minus-5">−5</button>
+    <button class="btn-neon" id="btn-minus-1">−1</button>
+    <input type="range" id="bpm-slider" min="40" max="240" value="72" class="bpm-slider" aria-label="BPM 滑块">
+    <button class="btn-neon" id="btn-plus-1">+1</button>
+    <button class="btn-neon" id="btn-plus-5">+5</button>
+  </div>
+
+  <!-- ════ BPM 数字输入 ════ -->
+  <div class="bpm-input-wrap">
+    <label for="bpm-input">BPM：</label>
+    <input type="number" id="bpm-input" min="40" max="240" value="72" aria-label="BPM 输入框">
+  </div>
+
+  <!-- ════ 拍号 ════ -->
+  <div class="glass-panel time-sig-section">
+    <div class="section-label">拍号</div>
+    <div class="time-sig-btns" role="group" aria-label="拍号">
+      <button class="btn ts-btn" data-beats="2">2</button>
+      <button class="btn ts-btn" data-beats="3">3</button>
+      <button class="btn ts-btn active" data-beats="4">4</button>
+      <button class="btn ts-btn" data-beats="6">6</button>
+    </div>
+  </div>
+
+  <!-- ════ 音色 ════ -->
+  <div class="glass-panel waveform-section">
+    <div class="section-label">音色</div>
+    <div class="waveform-btns" role="group" aria-label="音色">
+      <button class="btn wave-btn active" data-wave="sine">正弦波</button>
+      <button class="btn wave-btn" data-wave="square">方波</button>
+      <button class="btn wave-btn" data-wave="triangle">三角波</button>
+    </div>
+  </div>
+
+  <!-- ════ 拍点指示器 ════ -->
+  <div class="beat-indicator-row" id="beat-indicator-row" aria-live="polite"></div>
+
+  <!-- ════ 拍数计数 ════ -->
+  <div class="beat-counter" aria-live="polite">
+    <span id="beat-count">1</span>
+    <span class="beat-divider">/</span>
+    <span id="beat-total">4</span>
+  </div>
+
+  <!-- ════ 播放控制 ════ -->
+  <div class="transport">
+    <button class="btn-reset" id="btn-reset" title="重置">↺</button>
+    <button class="btn-play" id="btn-play" aria-label="播放或暂停">
+      <svg id="play-icon" width="14" height="14" viewBox="0 0 14 14" fill="currentColor">
+        <polygon points="3,2 12,7 3,12"/>
+      </svg>
+      <svg id="pause-icon" width="14" height="14" viewBox="0 0 14 14" fill="currentColor" style="display:none;">
+        <rect x="2" y="2" width="4" height="10" rx="1"/>
+        <rect x="8" y="2" width="4" height="10" rx="1"/>
+      </svg>
+      <span id="play-label">播放</span>
+    </button>
+  </div>
+
+  <!-- ════ 强拍重音开关 ════ -->
+  <div class="accent-toggle">
+    <label class="toggle-label">
+      <input type="checkbox" id="accent-toggle" checked>
+      <span>强拍重音</span>
+    </label>
+  </div>
+
+</div>
+
+<script src="js/Metronome.js"></script>
+<script src="js/UI.js"></script>
+<script>
+(function() {
+  var wrap     = document.getElementById('bunny-wrap');
+  var earL    = document.getElementById('bunny-ear-l');
+  var earR    = document.getElementById('bunny-ear-r');
+  var head    = document.getElementById('bunny-head');
+  var eyeLI  = document.getElementById('eye-l-iris');
+  var eyeRI  = document.getElementById('eye-r-iris');
+
+
+  function lerp(a, b, t) { return a + (b - a) * t; }
+  function easeOut(t) { return 1 - Math.pow(1 - t, 3); }
+  function easeIn(t)  { return t * t * t; }
+
+  function bounceEar(ear, dir, isAccent) {
+    var dur = isAccent ? 380 : 260;
+    var angle = isAccent ? -8 : -5;
+    var start = null;
+    ear.style.transformOrigin = 'center ' + (isAccent ? '100px' : '80px');
+    ear.style.transition = 'none';
+    ear.style.transform = 'rotate(' + (dir * angle) + 'deg)';
+    function frame(ts) {
+      if (!start) start = ts;
+      var p = (ts - start) / dur;
+      if (p < 1) {
+        var t = easeOut(p);
+        ear.style.transform = 'rotate(' + lerp(dir * angle, 0, t) + 'deg)';
+        requestAnimationFrame(frame);
+      } else {
+        ear.style.transform = 'rotate(0deg)';
+        ear.style.transition = '';
+      }
+    }
+    requestAnimationFrame(frame);
+  }
+
+  function flashBunny(isAccent) {
+    var dur     = isAccent ? 450 : 280;
+    var eyeCol  = isAccent ? '#ffffff' : '#00ffcc';
+    var irisCol = isAccent ? '#aaffee' : '#00ffcc';
+    var scale   = isAccent ? 1.08 : 1.04;
+    var sDur   = isAccent ? 320 : 200;
+
+    // ── Ears ─────────────────────────────────────────
+    bounceEar(earL, -1, isAccent);
+    bounceEar(earR,  1, isAccent);
+
+    // ── Eyes ─────────────────────────────────────────
+    [eyeLI, eyeRI].forEach(function(iris) {
+      if (!iris) return;
+      iris.setAttribute('fill', eyeCol);
+      iris.style.filter = 'drop-shadow(0 0 ' + (isAccent ? 12 : 6) + 'px ' + eyeCol + ')';
+      setTimeout(function() {
+        iris.setAttribute('fill', irisCol);
+        iris.style.filter = 'drop-shadow(0 0 4px #00ffcc)';
+      }, isAccent ? 300 : 180);
+    });
+
+    // ── Head bounce ────────────────────────────────
+    wrap.style.transition = 'none';
+    wrap.style.transform = 'scale(' + scale + ')';
+    var bStart = null;
+    function bFrame(ts) {
+      if (!bStart) bStart = ts;
+      var p = (ts - bStart) / sDur;
+      if (p < 1) {
+        var s = lerp(scale, 1, easeOut(p));
+        wrap.style.transform = 'scale(' + s.toFixed(4) + ')';
+        requestAnimationFrame(bFrame);
+      } else {
+        wrap.style.transition = '';
+        wrap.style.transform = '';
+      }
+    }
+    requestAnimationFrame(bFrame);
+  }
+
+  // Attach to metronome — poll until instance is ready
+  var _attachBunny = function() {
+    if (window._metronomeInstance) {
+      window._metronomeInstance.onBeat(function(beatIndex, isAccent) {
+        flashBunny(isAccent);
+      });
+    } else {
+      setTimeout(_attachBunny, 20);
+    }
+  };
+  _attachBunny();
+
+  // Click bunny to play/pause
+  wrap.addEventListener('click', function() {
+    document.getElementById('btn-play').click();
+  });
+
+  // Sync play/pause icon
+  var playIcon  = document.getElementById('play-icon');
+  var pauseIcon = document.getElementById('pause-icon');
+  var playLabel = document.getElementById('play-label');
+
+  function syncUI() {
+    var m = window._metronomeInstance;
+    if (!m) { setTimeout(syncUI, 30); return; }
+    if (m.isPlaying()) {
+      playIcon.style.display  = 'none';
+      pauseIcon.style.display = 'block';
+      playLabel.textContent  = '暂停';
+    } else {
+      playIcon.style.display  = 'block';
+      pauseIcon.style.display = 'none';
+      playLabel.textContent  = '播放';
+    }
+  }
+
+  document.getElementById('btn-play').addEventListener('click', function() {
+    setTimeout(syncUI, 30);
+  });
+  syncUI();
+})();
+
+</script>
+
+
+
+</body>
+</html>

@@ -1,0 +1,290 @@
+/* ─── Reset & Base ──────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:        #0f1117;
+  --surface:   #1a1d27;
+  --border:    #2e3345;
+  --text:      #c8cad8;
+  --muted:     #6b7088;
+  --accent:    #6366f1;
+  --accent2:   #f43f5e;
+  --accent3:   #22c55e;
+  --radius:    12px;
+  --shadow:    0 4px 24px rgba(0,0,0,0.4);
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ─── App Container ────────────────────────────────────── */
+.metronome-app {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 20px 32px;
+  width: 360px;
+  max-width: 95vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  box-shadow: var(--shadow);
+}
+
+/* ─── BPM Display ──────────────────────────────────────── */
+.bpm-display {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+.bpm-value {
+  font-size: 5rem;
+  font-weight: 800;
+  line-height: 1;
+  color: var(--accent);
+  font-variant-numeric: tabular-nums;
+  transition: transform 0.05s;
+}
+.bpm-value.pulse { animation: bpmPulse 0.08s ease-out; }
+@keyframes bpmPulse {
+  0%   { transform: scale(1.12); }
+  100% { transform: scale(1); }
+}
+.bpm-label {
+  font-size: 0.7rem;
+  color: var(--muted);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+/* ─── BPM Controls ─────────────────────────────────────── */
+.bpm-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+}
+.bpm-slider {
+  flex: 1;
+  height: 6px;
+  -webkit-appearance: none;
+  appearance: none;
+  background: var(--border);
+  border-radius: 3px;
+  outline: none;
+  cursor: pointer;
+}
+.bpm-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 20px; height: 20px;
+  border-radius: 50%;
+  background: var(--accent);
+  cursor: grab;
+  box-shadow: 0 0 8px rgba(99,102,241,0.5);
+}
+.bpm-slider::-moz-range-thumb {
+  width: 20px; height: 20px;
+  border-radius: 50%;
+  background: var(--accent);
+  border: none;
+  cursor: grab;
+}
+
+/* ─── BPM Input ────────────────────────────────────────── */
+.bpm-input-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.82rem;
+  color: var(--muted);
+}
+.bpm-input-wrap input {
+  width: 72px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text);
+  font-size: 1rem;
+  font-weight: 700;
+  padding: 4px 8px;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+.bpm-input-wrap input:focus { outline: 2px solid var(--accent); border-color: transparent; }
+.bpm-input-wrap input::-webkit-inner-spin-button,
+.bpm-input-wrap input::-webkit-outer-spin-button { -webkit-appearance: none; }
+
+/* ─── Section Labels ────────────────────────────────────── */
+.section-label {
+  font-size: 0.7rem;
+  color: var(--muted);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+  text-align: center;
+}
+
+/* ─── Time Signature ────────────────────────────────────── */
+.time-sig-section { display: flex; flex-direction: column; align-items: center; width: 100%; }
+.time-sig-btns { display: flex; gap: 6px; }
+.ts-btn {
+  width: 44px; height: 36px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--muted);
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.12s;
+}
+.ts-btn:hover { border-color: var(--accent); color: var(--accent); }
+.ts-btn.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+
+/* ─── Waveform ──────────────────────────────────────────── */
+.waveform-section { display: flex; flex-direction: column; align-items: center; width: 100%; }
+.waveform-btns { display: flex; gap: 6px; }
+.wave-btn {
+  padding: 6px 12px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--muted);
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.12s;
+}
+.wave-btn:hover { border-color: var(--accent2); color: var(--accent2); }
+.wave-btn.active { background: var(--accent2); border-color: var(--accent2); color: #fff; }
+
+/* ─── Beat Indicator ────────────────────────────────────── */
+.beat-indicator-row {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  justify-content: center;
+  min-height: 20px;
+}
+.beat-dot {
+  width: 14px; height: 14px;
+  border-radius: 50%;
+  background: var(--border);
+  transition: background 0.08s, box-shadow 0.08s;
+}
+.beat-dot.active {
+  background: var(--accent);
+  box-shadow: 0 0 10px var(--accent);
+}
+.beat-dot.accent {
+  background: var(--accent2);
+  box-shadow: 0 0 14px var(--accent2);
+}
+
+/* ─── Beat Counter ──────────────────────────────────────── */
+.beat-counter {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--text);
+}
+.beat-divider { color: var(--muted); }
+
+/* ─── Transport Buttons ─────────────────────────────────── */
+.transport { display: flex; gap: 12px; }
+.btn-transport {
+  width: 100px; height: 44px;
+  border-radius: 12px;
+  border: none;
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.12s, box-shadow 0.12s;
+}
+.btn-transport:active { transform: scale(0.95); }
+.btn-play {
+  background: var(--accent);
+  color: #fff;
+  box-shadow: 0 4px 16px rgba(99,102,241,0.4);
+}
+.btn-play:hover { box-shadow: 0 6px 24px rgba(99,102,241,0.6); }
+.btn-reset {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--muted);
+}
+.btn-reset:hover { border-color: var(--accent2); color: var(--accent2); }
+
+/* ─── Accent Toggle ─────────────────────────────────────── */
+.accent-toggle { display: flex; align-items: center; }
+.toggle-label {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 0.8rem;
+  color: var(--muted);
+  cursor: pointer;
+}
+.toggle-label input[type="checkbox"] {
+  width: 36px; height: 20px;
+  -webkit-appearance: none;
+  appearance: none;
+  background: var(--border);
+  border-radius: 10px;
+  position: relative;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.toggle-label input[type="checkbox"]::before {
+  content: '';
+  position: absolute;
+  top: 2px; left: 2px;
+  width: 16px; height: 16px;
+  border-radius: 50%;
+  background: #fff;
+  transition: left 0.2s;
+}
+.toggle-label input[type="checkbox"]:checked {
+  background: var(--accent);
+}
+.toggle-label input[type="checkbox"]:checked::before {
+  left: 18px;
+}
+
+/* ─── Generic Button ────────────────────────────────────── */
+.btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.12s;
+}
+.btn:active { transform: scale(0.94); }
+.btn-minus, .btn-plus {
+  width: 36px; height: 36px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  color: var(--muted);
+  font-size: 1rem;
+  font-weight: 700;
+}
+.btn-minus:hover, .btn-plus:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* ─── Responsive ────────────────────────────────────────── */
+@media (max-width: 420px) {
+  .metronome-app { padding: 24px 20px; width: 100vw; border-radius: 20px 20px 0 0; }
+  .bpm-value { font-size: 4rem; }
+}

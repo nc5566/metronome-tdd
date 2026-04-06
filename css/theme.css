@@ -1,0 +1,240 @@
+/**
+ * theme.css — Kawaii Cyberpunk Skull Metronome
+ */
+
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Poppins:wght@400;600;700&display=swap');
+
+:root {
+  --bg-deep:        #0a0a1a;
+  --bg-purple:     #1a0033;
+  --neon-pink:     #ff00ff;
+  --neon-cyan:     #00ffff;
+  --electric-blue: #00eeff;
+  --vivid-orange:  #ff9900;
+  --white:         #ffffff;
+  --silver:       #b0b0c8;
+  --glass-bg:     rgba(255,255,255,0.04);
+  --glass-border: rgba(255,255,255,0.10);
+  --radius-lg:    24px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Poppins', system-ui, sans-serif;
+  background: radial-gradient(ellipse at 50% 20%, #1a0033 0%, #0a0a1a 70%);
+  min-height: 100vh;
+  display: flex; align-items: center; justify-content: center;
+  overflow: hidden; color: var(--white);
+}
+
+.metronome-app {
+  position: relative;
+  width: 380px; max-width: 95vw;
+  display: flex; flex-direction: column; align-items: center;
+  gap: 14px;
+  padding: 24px 24px 28px;
+  background: rgba(10,5,25,0.85);
+  border: 1px solid rgba(0,255,255,0.12);
+  border-radius: var(--radius-lg);
+  backdrop-filter: blur(16px);
+  box-shadow: 0 0 0 1px rgba(0,255,255,0.05), 0 30px 80px rgba(0,0,0,0.8);
+}
+
+/* ── Bunny Visual ─────────────────────────────────── */
+.bunny-wrap {
+  position: relative;
+  width: 180px; height: 200px;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: transform 0.08s;
+}
+.bunny-wrap:hover { filter: brightness(1.1); }
+.bunny-wrap:active { transform: scale(0.96); }
+
+#bunny-svg {
+  width: 180px; height: 200px;
+  overflow: visible;
+  display: block;
+}
+
+/* ── BPM Display ─────────────────────────────────────── */
+.bpm-display { display: flex; flex-direction: column; align-items: center; gap: 2px; }
+.bpm-value {
+  font-family: 'Orbitron', monospace;
+  font-size: 5.5rem; font-weight: 900;
+  color: var(--electric-blue);
+  text-shadow:
+    0 0 10px var(--electric-blue),
+    0 0 30px var(--electric-blue),
+    0 0 60px rgba(0,238,255,0.4);
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  animation: bpmBreathe 3s ease-in-out infinite;
+  transition: transform 0.06s;
+}
+@keyframes bpmBreathe {
+  0%,100% { text-shadow: 0 0 8px var(--electric-blue), 0 0 20px var(--electric-blue); filter: brightness(0.85); }
+  50%     { text-shadow: 0 0 18px var(--electric-blue), 0 0 45px var(--electric-blue), 0 0 80px rgba(0,238,255,0.5); filter: brightness(1.15); }
+}
+.bpm-value.pulse { animation: bpmBeat 0.1s ease-out, bpmBreathe 3s ease-in-out infinite; }
+@keyframes bpmBeat {
+  0%   { transform: scale(1.14); }
+  100% { transform: scale(1); }
+}
+.bpm-label {
+  font-size: 0.62rem; color: rgba(0,238,255,0.45);
+  letter-spacing: 0.25em; text-transform: uppercase; font-weight: 600;
+}
+
+/* ── BPM Controls ─────────────────────────────────────── */
+.bpm-controls { display: flex; align-items: center; gap: 6px; width: 100%; }
+.bpm-slider {
+  flex: 1; -webkit-appearance: none; appearance: none;
+  height: 5px;
+  background: linear-gradient(90deg, var(--neon-cyan), var(--neon-pink));
+  border-radius: 3px; outline: none; cursor: pointer;
+  box-shadow: 0 0 8px rgba(0,255,255,0.3);
+}
+.bpm-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 20px; height: 20px; border-radius: 50%;
+  background: var(--white); border: 2px solid var(--neon-cyan);
+  box-shadow: 0 0 10px var(--neon-cyan); cursor: grab;
+}
+.bpm-slider::-moz-range-thumb {
+  width: 20px; height: 20px; border-radius: 50%;
+  background: var(--white); border: 2px solid var(--neon-cyan); cursor: grab;
+}
+.bpm-input-wrap { display: flex; align-items: center; gap: 8px; font-size: 0.78rem; color: var(--silver); }
+.bpm-input-wrap input {
+  width: 64px; background: rgba(0,0,0,0.5);
+  border: 1px solid var(--glass-border); border-radius: 8px;
+  color: var(--white); font-family: 'Orbitron', monospace;
+  font-size: 0.88rem; font-weight: 700; padding: 4px 8px;
+  text-align: center; outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.bpm-input-wrap input:focus { border-color: var(--neon-cyan); box-shadow: 0 0 8px rgba(0,255,255,0.3); }
+.bpm-input-wrap input::-webkit-inner-spin-button,
+.bpm-input-wrap input::-webkit-outer-spin-button { -webkit-appearance: none; }
+
+.btn-neon {
+  width: 32px; height: 32px; border-radius: 8px;
+  border: 1px solid rgba(0,255,255,0.3); background: rgba(0,255,255,0.07);
+  color: var(--neon-cyan); font-size: 0.85rem; font-weight: 700;
+  cursor: pointer; display: flex; align-items: center; justify-content: center;
+  transition: all 0.12s; flex-shrink: 0;
+}
+.btn-neon:hover {
+  background: rgba(0,255,255,0.18); border-color: var(--neon-cyan);
+  box-shadow: 0 0 10px rgba(0,255,255,0.4); transform: scale(1.05);
+}
+.btn-neon:active { transform: scale(0.92); }
+
+/* ── Glass Panels ─────────────────────────────────────── */
+.glass-panel {
+  width: 100%; background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(0,255,255,0.08); border-radius: 14px;
+  padding: 12px 14px; backdrop-filter: blur(10px);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.glass-panel:hover { border-color: rgba(0,255,255,0.18); box-shadow: 0 0 16px rgba(0,255,255,0.07); }
+.section-label {
+  font-size: 0.6rem; font-weight: 700; color: rgba(0,255,255,0.5);
+  letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 8px; text-align: center;
+}
+
+/* ── Time Signature ───────────────────────────────────── */
+.time-sig-btns { display: flex; gap: 6px; justify-content: center; }
+.ts-btn {
+  width: 44px; height: 34px; border-radius: 8px;
+  border: 1px solid rgba(0,238,255,0.2); background: rgba(0,238,255,0.04);
+  color: rgba(0,238,255,0.55); font-family: 'Poppins', sans-serif;
+  font-size: 0.95rem; font-weight: 700; cursor: pointer; transition: all 0.12s;
+}
+.ts-btn:hover { background: rgba(0,238,255,0.12); border-color: var(--electric-blue); color: var(--electric-blue); }
+.ts-btn.active { background: var(--electric-blue); border-color: var(--electric-blue); color: #050510; box-shadow: 0 0 12px rgba(0,238,255,0.5); }
+.ts-btn:active { transform: scale(0.92); }
+
+/* ── Waveform ─────────────────────────────────────────── */
+.waveform-btns { display: flex; gap: 6px; justify-content: center; }
+.wave-btn {
+  padding: 4px 12px; border-radius: 8px;
+  border: 1px solid rgba(255,0,255,0.2); background: rgba(255,0,255,0.04);
+  color: rgba(255,0,255,0.55); font-family: 'Poppins', sans-serif;
+  font-size: 0.7rem; font-weight: 600; cursor: pointer; transition: all 0.12s;
+}
+.wave-btn:hover { background: rgba(255,0,255,0.12); border-color: var(--neon-pink); color: var(--neon-pink); }
+.wave-btn.active { background: var(--neon-pink); border-color: var(--neon-pink); color: #050510; box-shadow: 0 0 10px rgba(255,0,255,0.5); }
+.wave-btn:active { transform: scale(0.92); }
+
+/* ── Beat Dots ────────────────────────────────────────── */
+.beat-indicator-row { display: flex; gap: 10px; align-items: center; justify-content: center; }
+.beat-dot {
+  width: 12px; height: 12px; border-radius: 50%;
+  background: rgba(255,255,255,0.08); border: 1.5px solid rgba(0,255,255,0.15);
+  transition: background 0.08s, box-shadow 0.08s;
+}
+.beat-dot.active { background: var(--neon-cyan); border-color: var(--neon-cyan); box-shadow: 0 0 8px var(--neon-cyan), 0 0 16px rgba(0,255,255,0.35); }
+.beat-dot.accent { background: var(--neon-pink); border-color: var(--neon-pink); box-shadow: 0 0 10px var(--neon-pink), 0 0 20px rgba(255,0,255,0.4); }
+
+/* ── Beat Counter ─────────────────────────────────────── */
+.beat-counter {
+  display: flex; align-items: center; gap: 4px;
+  font-family: 'Orbitron', monospace; font-size: 0.95rem; font-weight: 700;
+  color: var(--white);
+  background: rgba(0,0,0,0.5); border: 1px solid rgba(0,255,255,0.15);
+  border-radius: 8px; padding: 4px 14px; font-variant-numeric: tabular-nums;
+  box-shadow: inset 0 0 8px rgba(0,238,255,0.06);
+}
+.beat-divider { color: rgba(0,238,255,0.35); }
+
+/* ── Transport ─────────────────────────────────────────── */
+.transport { display: flex; gap: 10px; align-items: center; }
+
+.btn-play {
+  width: 110px; height: 46px; border-radius: 23px;
+  border: 1.5px solid var(--neon-cyan); background: rgba(0,255,255,0.08);
+  cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;
+  font-family: 'Poppins', sans-serif; font-size: 0.88rem; font-weight: 700;
+  color: var(--neon-cyan);
+  box-shadow: 0 0 14px rgba(0,255,255,0.25); transition: all 0.15s;
+}
+.btn-play:hover { background: rgba(0,255,255,0.18); box-shadow: 0 0 24px rgba(0,255,255,0.45); transform: scale(1.03); }
+.btn-play:active { transform: scale(0.94); }
+
+.btn-reset {
+  width: 46px; height: 46px; border-radius: 50%;
+  border: 1.5px solid rgba(255,0,255,0.25); background: rgba(255,0,255,0.06);
+  cursor: pointer; display: flex; align-items: center; justify-content: center;
+  font-size: 1.1rem; color: rgba(255,0,255,0.65);
+  box-shadow: 0 0 10px rgba(255,0,255,0.15); transition: all 0.15s;
+}
+.btn-reset:hover { background: rgba(255,0,255,0.14); border-color: var(--neon-pink); color: var(--neon-pink); box-shadow: 0 0 16px rgba(255,0,255,0.35); }
+.btn-reset:active { transform: scale(0.92); }
+
+/* ── Accent Toggle ─────────────────────────────────────── */
+.accent-toggle { display: flex; align-items: center; justify-content: center; }
+.toggle-label { display: flex; align-items: center; gap: 8px; font-size: 0.78rem; color: var(--silver); cursor: pointer; user-select: none; }
+.toggle-label input[type="checkbox"] {
+  width: 34px; height: 18px; -webkit-appearance: none; appearance: none;
+  background: rgba(255,255,255,0.08); border-radius: 9px;
+  position: relative; cursor: pointer; border: 1px solid rgba(0,255,255,0.25);
+  transition: background 0.2s;
+}
+.toggle-label input[type="checkbox"]::before {
+  content: ''; position: absolute;
+  top: 2px; left: 2px; width: 12px; height: 12px; border-radius: 50%;
+  background: var(--silver); transition: left 0.2s, background 0.2s;
+}
+.toggle-label input[type="checkbox"]:checked { background: rgba(0,255,255,0.25); border-color: var(--neon-cyan); }
+.toggle-label input[type="checkbox"]:checked::before { left: 18px; background: var(--neon-cyan); box-shadow: 0 0 6px var(--neon-cyan); }
+
+/* ── Responsive ─────────────────────────────────────────── */
+@media (max-width: 420px) {
+  .metronom-app { padding: 20px 16px; width: 100vw; border-radius: 20px 20px 0 0; }
+  .bpm-value { font-size: 4.2rem; }
+  .bunny-wrap { width: 160px; height: 175px; }
+  #bunny-svg { width: 160px; height: 175px; }
+}

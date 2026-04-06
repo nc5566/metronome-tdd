@@ -1,0 +1,13 @@
+{
+  "name": "metronome-tdd",
+  "version": "1.0.0",
+  "description": "Metronome — TDD Edition (Web Audio API, Vanilla JS)",
+  "scripts": {
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0"
+  }
+}
